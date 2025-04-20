@@ -15,15 +15,12 @@ import { string } from "zod";
 import { calculateTotals } from "./calculateTotals";
 
 const getClerkUser = async () => {
-  try {
-    const user = await currentUser();
-    if (!user) throw new Error("You must be logged in to access this route.");
-    if (!user.privateMetadata.hasProfile) redirect("/profile/create");
-    return user;
-  } catch (error) {
-    console.error("Error getting Clerk user:", error);
-    redirect("/sign-in"); // Redirect to sign-in page on error
-  }
+  const user = await currentUser();
+
+  if (!user) throw new Error("You must be logged in to access this route.");
+  if (!user.privateMetadata.hasProfile) redirect("/profile/create");
+
+  return user;
 };
 
 const renderError = (error: unknown): { message: string } => {
